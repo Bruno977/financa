@@ -18,6 +18,11 @@ export const GlobalStyle = createGlobalStyle`
   body, input, textarea, button {
     font-family: 'Nunito', sans-serif;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: ${(props) => props.theme.fontSizes.textBase};
+  }
+  .container{
+    max-width: ${(props) => props.theme.container.lg};
+    margin: 0 auto;
+    padding: 0 1.25rem;
   }
 `
