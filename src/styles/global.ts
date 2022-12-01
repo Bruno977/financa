@@ -20,9 +20,17 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     font-size: ${(props) => props.theme.fontSizes.textBase};
   }
+  a{
+    text-decoration: none;
+    color: ${(props) => props.theme.colors.gray300}
+  }
+  ul{
+    list-style: none;
+  }
   .container{
     max-width: ${(props) => props.theme.container.lg};
     margin: 0 auto;
     padding: 0 1.25rem;
   }
+  
 `
