@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../../contexts/AuthContext'
 import { ButtonSignIn, HeaderContainer, ContainerNavigation } from './styles'
 
 function Header() {
+    const { signInWithGoogle, user } = useContext(AuthContext)
+    console.log(user)
     return (
         <HeaderContainer>
             <ContainerNavigation>
@@ -18,7 +21,7 @@ function Header() {
                         </li>
                     </ul>
                 </nav>
-                <ButtonSignIn>button</ButtonSignIn>
+                <ButtonSignIn onClick={signInWithGoogle}>button</ButtonSignIn>
             </ContainerNavigation>
         </HeaderContainer>
     )
