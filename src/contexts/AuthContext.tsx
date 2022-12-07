@@ -4,10 +4,11 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     onAuthStateChanged,
+    signOut,
 } from '../services/firebase'
 
 interface User {
-    id: string
+    id: string | null
     name: string | null
     avatar: string | null
 }
@@ -17,12 +18,14 @@ interface AuthContextProps {
 interface AuthContextType {
     signInWithGoogle: () => Promise<void>
     user: User | undefined
+    signOutGoogle: () => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProps) {
-    const [user, setUser] = useState<User>()
+    const [user, setUser] = useState<User | undefined>()
+
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -35,9 +38,11 @@ export function AuthContextProvider({ children }: AuthContextProps) {
                     name: displayName,
                     avatar: photoURL,
                 })
+                console.log(user)
             }
         })
     }, [])
+
     async function signInWithGoogle() {
         try {
             const provider = new GoogleAuthProvider()
@@ -55,8 +60,21 @@ export function AuthContextProvider({ children }: AuthContextProps) {
             console.log(error)
         }
     }
+
+    async function signOutGoogle() {
+        try {
+            await signOut(auth)
+            setUser({
+                id: null,
+                name: null,
+                avatar: null,
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
-        <AuthContext.Provider value={{ signInWithGoogle, user }}>
+        <AuthContext.Provider value={{ signInWithGoogle, user, signOutGoogle }}>
             {children}
         </AuthContext.Provider>
     )

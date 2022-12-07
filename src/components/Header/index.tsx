@@ -2,11 +2,19 @@ import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../contexts/AuthContext'
-import { ButtonSignIn, HeaderContainer, ContainerNavigation } from './styles'
+
+import {
+    ButtonSignIn,
+    HeaderContainer,
+    ContainerNavigation,
+    Avatar,
+} from './styles'
+
+import { FaGoogle, FaRegUserCircle, FaTimes } from 'react-icons/fa'
 
 function Header() {
-    const { signInWithGoogle, user } = useContext(AuthContext)
-    console.log(user)
+    const { signInWithGoogle, user, signOutGoogle } = useContext(AuthContext)
+
     return (
         <HeaderContainer>
             <ContainerNavigation>
@@ -21,7 +29,22 @@ function Header() {
                         </li>
                     </ul>
                 </nav>
-                <ButtonSignIn onClick={signInWithGoogle}>button</ButtonSignIn>
+                {user ? (
+                    <ButtonSignIn onClick={signOutGoogle}>
+                        {user.avatar !== null ? (
+                            <Avatar src={user.avatar} alt="" />
+                        ) : (
+                            <FaRegUserCircle />
+                        )}
+                        <span>{user.name}</span>
+                        <FaTimes />
+                    </ButtonSignIn>
+                ) : (
+                    <ButtonSignIn onClick={signInWithGoogle}>
+                        <FaGoogle />
+                        <span>Entrar com google</span>
+                    </ButtonSignIn>
+                )}
             </ContainerNavigation>
         </HeaderContainer>
     )
