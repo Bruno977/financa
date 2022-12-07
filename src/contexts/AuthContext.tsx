@@ -8,7 +8,7 @@ import {
 } from '../services/firebase'
 
 interface User {
-    id: string | null
+    id: string
     name: string | null
     avatar: string | null
 }
@@ -17,14 +17,14 @@ interface AuthContextProps {
 }
 interface AuthContextType {
     signInWithGoogle: () => Promise<void>
-    user: User | undefined
+    user: User | null
     signOutGoogle: () => Promise<void>
 }
 
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProps) {
-    const [user, setUser] = useState<User | undefined>()
+    const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -64,11 +64,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
     async function signOutGoogle() {
         try {
             await signOut(auth)
-            setUser({
-                id: null,
-                name: null,
-                avatar: null,
-            })
+            setUser(null)
         } catch (error) {
             console.log(error)
         }

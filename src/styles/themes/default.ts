@@ -65,6 +65,9 @@ const defaultTheme: DefaultTheme = {
 
         yellow500: '#FBA94C',
     },
+    transitions: {
+        all: 'all .2s ease-in-out 0s',
+    },
 }
 
 export { defaultTheme }

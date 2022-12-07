@@ -10,7 +10,7 @@ import {
     Avatar,
 } from './styles'
 
-import { FaGoogle, FaRegUserCircle, FaTimes } from 'react-icons/fa'
+import { FaGoogle, FaRegUserCircle, FaTimes, FaChartBar } from 'react-icons/fa'
 
 function Header() {
     const { signInWithGoogle, user, signOutGoogle } = useContext(AuthContext)
@@ -19,8 +19,13 @@ function Header() {
         <HeaderContainer>
             <ContainerNavigation>
                 <nav>
-                    <Link to="/">Finança</Link>
+                    <Link to="/">
+                        <FaChartBar size={40} />
+                    </Link>
                     <ul>
+                        <li>
+                            <NavLink to="/">Home</NavLink>
+                        </li>
                         <li>
                             <NavLink to="/dashboard">Dashboard</NavLink>
                         </li>
@@ -30,7 +35,7 @@ function Header() {
                     </ul>
                 </nav>
                 {user ? (
-                    <ButtonSignIn onClick={signOutGoogle}>
+                    <ButtonSignIn onClick={signOutGoogle} logged>
                         {user.avatar !== null ? (
                             <Avatar src={user.avatar} alt="" />
                         ) : (
