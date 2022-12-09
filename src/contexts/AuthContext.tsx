@@ -15,9 +15,13 @@ interface User {
 interface AuthContextProps {
     children: ReactNode
 }
+interface Logged {
+    logged: boolean
+}
 interface AuthContextType {
     signInWithGoogle: () => Promise<void>
     user: User | null
+    logged: Logged | boolean
     signOutGoogle: () => Promise<void>
 }
 
@@ -25,6 +29,7 @@ export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProps) {
     const [user, setUser] = useState<User | null>(null)
+    const [logged, setLogged] = useState<Logged | boolean>(false)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -38,6 +43,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
                     name: displayName,
                     avatar: photoURL,
                 })
+                setLogged(true)
                 console.log(user)
             }
         })
@@ -56,6 +62,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
                 name: displayName,
                 avatar: photoURL,
             })
+            setLogged(true)
         } catch (error) {
             console.log(error)
         }
@@ -65,12 +72,15 @@ export function AuthContextProvider({ children }: AuthContextProps) {
         try {
             await signOut(auth)
             setUser(null)
+            setLogged(false)
         } catch (error) {
             console.log(error)
         }
     }
     return (
-        <AuthContext.Provider value={{ signInWithGoogle, user, signOutGoogle }}>
+        <AuthContext.Provider
+            value={{ signInWithGoogle, user, signOutGoogle, logged }}
+        >
             {children}
         </AuthContext.Provider>
     )
