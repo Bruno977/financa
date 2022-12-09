@@ -34,6 +34,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                setLogged(true)
                 const { displayName, uid, photoURL } = user
                 if (displayName === null || uid === undefined) {
                     throw new Error('Existem informações pendentes')
@@ -44,7 +45,6 @@ export function AuthContextProvider({ children }: AuthContextProps) {
                     avatar: photoURL,
                 })
                 setLogged(true)
-                console.log(user)
             }
         })
     }, [])

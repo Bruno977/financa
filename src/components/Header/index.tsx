@@ -13,7 +13,8 @@ import {
 import { FaGoogle, FaRegUserCircle, FaTimes, FaChartBar } from 'react-icons/fa'
 
 function Header() {
-    const { signInWithGoogle, user, signOutGoogle } = useContext(AuthContext)
+    const { signInWithGoogle, user, signOutGoogle, logged } =
+        useContext(AuthContext)
 
     return (
         <HeaderContainer>
@@ -23,15 +24,20 @@ function Header() {
                         <FaChartBar size={40} />
                     </Link>
                     <ul>
-                        <li>
-                            <NavLink to="/">Home</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard">Dashboard</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/controll">Controle</NavLink>
-                        </li>
+                        {logged ? (
+                            <>
+                                <li>
+                                    <NavLink to="/dashboard">Dashboard</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/controll">Controle</NavLink>
+                                </li>
+                            </>
+                        ) : (
+                            <li>
+                                <NavLink to="/">Home</NavLink>
+                            </li>
+                        )}
                     </ul>
                 </nav>
                 {user ? (

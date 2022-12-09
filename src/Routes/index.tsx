@@ -1,11 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import {
-    Routes,
-    Route,
-    useLocation,
-    useNavigate,
-    BrowserRouter,
-} from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { AuthContext } from '../contexts/AuthContext'
 import Controls from '../pages/controls'
