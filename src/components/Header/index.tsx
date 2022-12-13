@@ -30,7 +30,7 @@ function Header() {
                                     <NavLink to="/dashboard">Dashboard</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/controll">Controle</NavLink>
+                                    <NavLink to="/controll">Transações</NavLink>
                                 </li>
                             </>
                         ) : (
@@ -43,7 +43,11 @@ function Header() {
                 {user ? (
                     <ButtonSignIn onClick={signOutGoogle} logged>
                         {user.avatar !== null ? (
-                            <Avatar src={user.avatar} alt="" />
+                            <Avatar
+                                src={user.avatar}
+                                alt=""
+                                referrerPolicy="no-referrer"
+                            />
                         ) : (
                             <FaRegUserCircle />
                         )}

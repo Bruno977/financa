@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
-import Controls from './pages/controls'
+import Transactions from './pages/transactions'
 import Dashboard from './pages/dashboard'
 import Home from './pages/Home'
 
@@ -11,7 +11,7 @@ function Router() {
             <Route path="/" element={<Layout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/controll" element={<Controls />} />
+                <Route path="/transaction" element={<Transactions />} />
             </Route>
         </Routes>
     )
