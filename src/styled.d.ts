@@ -68,6 +68,7 @@ declare module 'styled-components' {
             red700: string
 
             yellow500: string
+            blue: string
         }
         transitions: {
             all: string

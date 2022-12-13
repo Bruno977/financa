@@ -68,7 +68,7 @@ export const ButtonSignIn = styled.button<ButtonProps>`
     padding: 0.625rem 1.25rem;
     border: none;
     cursor: pointer;
-    border-radius: ${(props) => props.theme.borderRadius.roundedMd};
+    border-radius: ${(props) => props.theme.borderRadius.roundedFull};
 
     display: flex;
     align-items: center;

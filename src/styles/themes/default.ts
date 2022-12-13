@@ -64,6 +64,7 @@ const defaultTheme: DefaultTheme = {
         red700: '#7A1921',
 
         yellow500: '#FBA94C',
+        blue: '#61DCFB',
     },
     transitions: {
         all: 'all .2s ease-in-out 0s',
