@@ -6,5 +6,9 @@ import { AuthContext } from '../contexts/AuthContext'
 export function PrivateRoute() {
     const { logged } = useContext(AuthContext)
 
-    return logged ? <Outlet /> : <Navigate to="/" />
+    if (!logged) {
+        return <Navigate to="/login" />
+    } else {
+        return <Outlet />
+    }
 }

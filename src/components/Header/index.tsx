@@ -13,7 +13,7 @@ import {
 import { FaGoogle, FaRegUserCircle, FaTimes, FaChartBar } from 'react-icons/fa'
 
 function Header() {
-    const { signInWithGoogle, user, signOutGoogle, logged } =
+    const { signInWithGoogle, user, signOutGoogle, logged, loading } =
         useContext(AuthContext)
 
     return (
@@ -27,38 +27,49 @@ function Header() {
                         {logged ? (
                             <>
                                 <li>
-                                    <NavLink to="/dashboard">Dashboard</NavLink>
+                                    <NavLink to="/">Dashboard</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="/controll">Transações</NavLink>
+                                    <NavLink to="/transactions">
+                                        Transações
+                                    </NavLink>
                                 </li>
                             </>
                         ) : (
                             <li>
-                                <NavLink to="/">Home</NavLink>
+                                <NavLink to="/login">Entrar</NavLink>
                             </li>
                         )}
                     </ul>
                 </nav>
-                {user ? (
-                    <ButtonSignIn onClick={signOutGoogle} logged>
-                        {user.avatar !== null ? (
-                            <Avatar
-                                src={user.avatar}
-                                alt=""
-                                referrerPolicy="no-referrer"
-                            />
-                        ) : (
-                            <FaRegUserCircle />
-                        )}
-                        <span>{user.name}</span>
-                        <FaTimes />
+                {loading ? (
+                    <ButtonSignIn>
+                        <FaGoogle />
+                        <span>Carregando...</span>
                     </ButtonSignIn>
                 ) : (
-                    <ButtonSignIn onClick={signInWithGoogle}>
-                        <FaGoogle />
-                        <span>Entrar com google</span>
-                    </ButtonSignIn>
+                    <>
+                        {user ? (
+                            <ButtonSignIn onClick={signOutGoogle} logged>
+                                {user.avatar !== null ? (
+                                    <Avatar
+                                        src={user.avatar}
+                                        alt=""
+                                        referrerPolicy="no-referrer"
+                                    />
+                                ) : (
+                                    <FaRegUserCircle size={24} />
+                                )}
+                                <span>{user.name}</span>
+                                <FaTimes />
+                            </ButtonSignIn>
+                        ) : (
+                            <ButtonSignIn onClick={signInWithGoogle}>
+                                <FaGoogle />
+                                <span>Entrar com google</span>
+                            </ButtonSignIn>
+                        )}
+                    </>
                 )}
             </ContainerNavigation>
         </HeaderContainer>

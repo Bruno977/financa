@@ -32,5 +32,26 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     padding: 0 1.25rem;
   }
+  .ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 2000ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open{
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+    opacity: 0;
+}
+  /* .overlay-modal{
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
   
 `

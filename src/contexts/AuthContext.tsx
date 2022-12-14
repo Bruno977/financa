@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useEffect, useState } from 'react'
+
 import {
     auth,
     GoogleAuthProvider,
@@ -22,6 +23,7 @@ interface AuthContextType {
     signInWithGoogle: () => Promise<void>
     user: User | null
     logged: Logged | boolean
+    loading: boolean
     signOutGoogle: () => Promise<void>
 }
 
@@ -29,9 +31,16 @@ export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider({ children }: AuthContextProps) {
     const [user, setUser] = useState<User | null>(null)
-    const [logged, setLogged] = useState<Logged | boolean>(false)
+    const [loading, setLoading] = useState(false)
+    const [logged, setLogged] = useState<Logged | boolean>(() => {
+        if (window.localStorage.getItem('logged')) {
+            return true
+        }
+        return false
+    })
 
     useEffect(() => {
+        setLoading(true)
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 setLogged(true)
@@ -44,7 +53,13 @@ export function AuthContextProvider({ children }: AuthContextProps) {
                     name: displayName,
                     avatar: photoURL,
                 })
-                setLogged(true)
+                window.localStorage.setItem('logged', 'true')
+                setLoading(false)
+            } else {
+                setLogged(false)
+                setLoading(false)
+                window.localStorage.removeItem('logged')
+                // window.location.href = '/login'
             }
         })
     }, [])
@@ -62,6 +77,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
                 name: displayName,
                 avatar: photoURL,
             })
+            window.localStorage.setItem('logged', 'true')
             setLogged(true)
         } catch (error) {
             console.log(error)
@@ -73,13 +89,15 @@ export function AuthContextProvider({ children }: AuthContextProps) {
             await signOut(auth)
             setUser(null)
             setLogged(false)
+            window.location.href = '/login'
+            window.localStorage.removeItem('logged')
         } catch (error) {
             console.log(error)
         }
     }
     return (
         <AuthContext.Provider
-            value={{ signInWithGoogle, user, signOutGoogle, logged }}
+            value={{ signInWithGoogle, user, signOutGoogle, logged, loading }}
         >
             {children}
         </AuthContext.Provider>

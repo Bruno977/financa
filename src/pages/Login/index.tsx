@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
-import imageHome from '../../assets/images/image-home.svg'
+import { Navigate } from 'react-router-dom'
+import imageLogin from '../../assets/images/image-home.svg'
 import { AuthContext } from '../../contexts/AuthContext'
 import { Container, Description, ImageContainer } from './style'
 
-function Home() {
-    const { signInWithGoogle } = useContext(AuthContext)
+function Login() {
+    const { signInWithGoogle, logged } = useContext(AuthContext)
+    if (logged) {
+        return <Navigate to="/" />
+    }
+
     return (
         <Container>
             <Description>
@@ -19,10 +24,10 @@ function Home() {
                 </button>
             </Description>
             <ImageContainer>
-                <img src={imageHome} alt="" />
+                <img src={imageLogin} alt="" />
             </ImageContainer>
         </Container>
     )
 }
 
-export default Home
+export default Login
