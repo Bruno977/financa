@@ -10,6 +10,9 @@ function Controls() {
     function handleOpenModal() {
         setIsOpen(true)
     }
+    function closeModal() {
+        setIsOpen(false)
+    }
     return (
         <Container>
             <TitleContainer>
@@ -19,7 +22,10 @@ function Controls() {
 
             <SearchTransaction />
             <Table />
-            <ModalNewTransaction modalIsOpen={modalIsOpen} />
+            <ModalNewTransaction
+                modalIsOpen={modalIsOpen}
+                closeModal={closeModal}
+            />
         </Container>
     )
 }
