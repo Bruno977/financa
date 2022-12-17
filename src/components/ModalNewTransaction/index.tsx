@@ -4,6 +4,7 @@ import { FaArrowCircleDown, FaArrowCircleUp, FaTimes } from 'react-icons/fa'
 import { database } from '../../services/firebase'
 import {
     ButtonTransaction,
+    InputLabel,
     ReactModal,
     TransactionTypeContainer,
 } from './styles'
@@ -19,6 +20,7 @@ interface formDataProps {
     price: string
     category: string
     type: string
+    createdAt: string
 }
 
 function ModalNewTransaction({
@@ -30,20 +32,37 @@ function ModalNewTransaction({
         price: '',
         category: '',
         type: 'income',
+        createdAt: '',
     })
 
     const { user } = useContext(AuthContext)
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        const TransactionRef = ref(database, `users/${user?.id}/transactions`)
-        const newTransactionRef = push(TransactionRef)
-        set(newTransactionRef, {
-            description: formData.description,
-            price: formData.price,
-            category: formData.category,
-            type: formData.type,
-        })
+        try {
+            const TransactionRef = ref(
+                database,
+                `users/${user?.id}/transactions`
+            )
+            const newTransactionRef = push(TransactionRef)
+            set(newTransactionRef, {
+                description: formData.description,
+                price: formData.price,
+                category: formData.category,
+                type: formData.type,
+                createdAt: new Date().toLocaleDateString('pt-BR', {
+                    // weekday: 'nume',
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                }),
+            })
+        } catch (error) {
+            console.log('Erro')
+        }
     }
     return (
         <ReactModal
@@ -69,17 +88,20 @@ function ModalNewTransaction({
                         })
                     }
                 />
-                <input
-                    type="text"
-                    placeholder="Preço"
-                    value={formData.price}
-                    onChange={({ target }) =>
-                        setFormData({
-                            ...formData,
-                            price: target.value,
-                        })
-                    }
-                />
+                <InputLabel>
+                    <label>R$</label>
+                    <input
+                        type="text"
+                        placeholder="Preço"
+                        value={formData.price}
+                        onChange={({ target }) =>
+                            setFormData({
+                                ...formData,
+                                price: target.value,
+                            })
+                        }
+                    />
+                </InputLabel>
                 <input
                     type="text"
                     placeholder="Categoria"

@@ -95,3 +95,30 @@ export const ButtonTransaction = styled.button<ButtonTransactionProps>`
             !isActive && colors[activeColor]};
     }
 `
+
+export const InputLabel = styled.div`
+    background-color: ${(props) => props.theme.colors.gray900};
+    border-radius: ${(props) => props.theme.borderRadius.roundedMd};
+    display: flex;
+    align-items: baseline;
+
+    &:has(input:focus) {
+        box-shadow: 0 0 0 2px ${(props) => props.theme.colors.green500};
+    }
+
+    label {
+        font-weight: 400;
+        font-size: ${(props) => props.theme.fontSizes.textSm};
+        color: ${(props) => props.theme.colors.gray400};
+        padding-left: 1.25rem;
+    }
+    input {
+        border: 0;
+        width: '100%';
+        margin: 0 !important;
+        &:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+    }
+`
