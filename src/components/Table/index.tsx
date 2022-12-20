@@ -5,12 +5,14 @@ interface TableProps {
         id: string
         description: string
         category: string
-        price: number
+        price: string
         type: string
         createdAt: string
+        empty?: string
     }[]
+    loading: boolean
 }
-function Table({ transactions }: TableProps) {
+function Table({ transactions, loading }: TableProps) {
     return (
         <TableContainer>
             <thead>
@@ -21,25 +23,40 @@ function Table({ transactions }: TableProps) {
                     <th>Data</th>
                 </tr>
             </thead>
-            <tbody>
-                {transactions.length ? (
-                    transactions.map((transaction) => (
-                        <tr key={transaction.id}>
-                            <td>{transaction.description}</td>
-                            <td>{transaction.price}</td>
-                            <td>{transaction.category}</td>
-                            <td>{transaction.createdAt.split(' ')[0]}</td>
-                        </tr>
-                    ))
-                ) : (
+            {loading ? (
+                <tbody>
                     <tr>
-                        <td>Nenhum dado encontrado</td>
+                        <td>Carregando</td>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                )}
-            </tbody>
+                </tbody>
+            ) : (
+                <tbody>
+                    {transactions.length
+                        ? transactions.map((transaction) =>
+                              transaction.empty ? (
+                                  <tr key={transaction.id}>
+                                      <td>Nenhum dado encontrado</td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                  </tr>
+                              ) : (
+                                  <tr key={transaction.id}>
+                                      <td>{transaction.description}</td>
+                                      <td>{transaction.price}</td>
+                                      <td>{transaction.category}</td>
+                                      <td>
+                                          {transaction.createdAt.split(' ')[0]}
+                                      </td>
+                                  </tr>
+                              )
+                          )
+                        : null}
+                </tbody>
+            )}
         </TableContainer>
     )
 }

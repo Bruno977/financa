@@ -12,9 +12,10 @@ interface TransactionsProps {
     id: string
     description: string
     category: string
-    price: number
+    price: string
     type: string
     createdAt: string
+    empty?: string
 }
 type FirebaseQuestions = Record<
     string,
@@ -22,14 +23,16 @@ type FirebaseQuestions = Record<
         id: string
         description: string
         category: string
-        price: number
+        price: string
         type: string
         createdAt: string
+        empty?: string
     }
 >
 
 function Controls() {
     const [modalIsOpen, setIsOpen] = React.useState(false)
+    const [loading, setLoading] = useState(false)
     const { user } = useContext(AuthContext)
 
     const [transactions, setTransactions] = useState<TransactionsProps[]>([])
@@ -40,61 +43,82 @@ function Controls() {
         setIsOpen(false)
     }
     async function getTransactions() {
-        if (user) {
-            // const queryTransactions = query(
-            //     ref(database, `users/${user?.id}/transactions`),
-            //     limitToLast(5)
-            // )
-            // get(queryTransactions)
-            //     .then((snapshot) => {
-            //         if (snapshot.exists()) {
-            //             const firebaseQuestions: FirebaseQuestions =
-            //                 snapshot.val()
-            //             const transactionsSnapshot = Object.entries(
-            //                 firebaseQuestions
-            //             ).map(([key, value]) => {
-            //                 return {
-            //                     id: key,
-            //                     description: value.description,
-            //                     price: value.price,
-            //                     category: value.category,
-            //                     type: value.type,
-            //                 }
-            //             })
-            //             setTransactions(transactionsSnapshot)
-            //         } else {
-            //             console.log('No data available')
-            //         }
-            //     })
-            //     .catch((error) => {
-            //         console.error(error)
-            //     })
+        try {
+            setLoading(true)
+            if (user) {
+                // const queryTransactions = query(
+                //     ref(database, `users/${user?.id}/transactions`),
+                //     limitToLast(5)
+                // )
+                // get(queryTransactions)
+                //     .then((snapshot) => {
+                //         if (snapshot.exists()) {
+                //             const firebaseQuestions: FirebaseQuestions =
+                //                 snapshot.val()
+                //             const transactionsSnapshot = Object.entries(
+                //                 firebaseQuestions
+                //             ).map(([key, value]) => {
+                //                 return {
+                //                     id: key,
+                //                     description: value.description,
+                //                     price: value.price,
+                //                     category: value.category,
+                //                     type: value.type,
+                //                 }
+                //             })
+                //             setTransactions(transactionsSnapshot)
+                //         } else {
+                //             console.log('No data available')
+                //         }
+                //     })
+                //     .catch((error) => {
+                //         console.error(error)
+                //     })
 
-            const queryTransactions = query(
-                ref(database, `users/${user?.id}/transactions`),
-                limitToLast(5)
-            )
+                const queryTransactions = query(
+                    ref(database, `users/${user?.id}/transactions`),
+                    limitToLast(5)
+                )
 
-            onValue(queryTransactions, (snapshot) => {
-                if (snapshot.exists()) {
-                    const firebaseQuestions: FirebaseQuestions = snapshot.val()
-                    const transactionsSnapshot = Object.entries(
-                        firebaseQuestions
-                    ).map(([key, value]) => {
-                        return {
-                            id: key,
-                            description: value.description,
-                            price: value.price,
-                            category: value.category,
-                            type: value.type,
-                            createdAt: value.createdAt,
-                        }
-                    })
-                    setTransactions(transactionsSnapshot)
-                } else {
-                    // console.log('Nenhum Dado encontrado')
-                }
-            })
+                onValue(queryTransactions, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const firebaseQuestions: FirebaseQuestions =
+                            snapshot.val()
+                        const transactionsSnapshot = Object.entries(
+                            firebaseQuestions
+                        ).map(([key, value]) => {
+                            return {
+                                id: key,
+                                description: value.description,
+                                price: value.price,
+                                category: value.category,
+                                type: value.type,
+                                createdAt: value.createdAt,
+                            }
+                        })
+                        setTransactions(transactionsSnapshot)
+                        setLoading(false)
+                    } else {
+                        setTransactions([
+                            {
+                                id: '',
+                                description: '',
+                                createdAt: '',
+                                price: '',
+                                category: '',
+                                type: '',
+                                empty: 'Nenhum Dado encontrado',
+                            },
+                        ])
+                        setLoading(false)
+                        // console.log('Nenhum Dado encontrado')
+                    }
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            // setLoading(false)
         }
     }
     useEffect(() => {
@@ -109,7 +133,7 @@ function Controls() {
             </TitleContainer>
 
             <SearchTransaction />
-            <Table transactions={transactions} />
+            <Table transactions={transactions} loading={loading} />
             <ModalNewTransaction
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}

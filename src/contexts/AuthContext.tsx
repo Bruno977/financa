@@ -24,6 +24,7 @@ interface AuthContextType {
     user: User | null
     logged: Logged | boolean
     loading: boolean
+    toogleLoading: (value: boolean) => void
     signOutGoogle: () => Promise<void>
 }
 
@@ -95,9 +96,20 @@ export function AuthContextProvider({ children }: AuthContextProps) {
             console.log(error)
         }
     }
+
+    function toogleLoading(value: boolean) {
+        setLoading(value)
+    }
     return (
         <AuthContext.Provider
-            value={{ signInWithGoogle, user, signOutGoogle, logged, loading }}
+            value={{
+                signInWithGoogle,
+                user,
+                signOutGoogle,
+                logged,
+                loading,
+                toogleLoading,
+            }}
         >
             {children}
         </AuthContext.Provider>
