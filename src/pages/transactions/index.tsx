@@ -12,7 +12,7 @@ interface TransactionsProps {
     id: string
     description: string
     category: string
-    price: string
+    price: number
     type: string
     createdAt: string
 }
@@ -22,7 +22,7 @@ type FirebaseQuestions = Record<
         id: string
         description: string
         category: string
-        price: string
+        price: number
         type: string
         createdAt: string
     }

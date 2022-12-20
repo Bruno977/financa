@@ -10,6 +10,7 @@ import {
 } from './styles'
 
 import { AuthContext } from '../../contexts/AuthContext'
+import CurrencyInput from 'react-currency-input-field'
 
 interface ModalNewTransactionProps {
     modalIsOpen: boolean
@@ -17,7 +18,7 @@ interface ModalNewTransactionProps {
 }
 interface formDataProps {
     description: string
-    price: string
+    price: string | undefined
     category: string
     type: string
     createdAt: string
@@ -51,7 +52,6 @@ function ModalNewTransaction({
                 category: formData.category,
                 type: formData.type,
                 createdAt: new Date().toLocaleDateString('pt-BR', {
-                    // weekday: 'nume',
                     year: 'numeric',
                     month: 'numeric',
                     day: 'numeric',
@@ -59,6 +59,13 @@ function ModalNewTransaction({
                     minute: 'numeric',
                     second: 'numeric',
                 }),
+            })
+            setFormData({
+                description: '',
+                price: '',
+                category: '',
+                type: 'income',
+                createdAt: '',
             })
         } catch (error) {
             console.log('Erro')
@@ -79,6 +86,7 @@ function ModalNewTransaction({
                 <h4>Nova transação</h4>
                 <input
                     type="text"
+                    required
                     placeholder="Descrição"
                     value={formData.description}
                     onChange={({ target }) =>
@@ -90,21 +98,28 @@ function ModalNewTransaction({
                 />
                 <InputLabel>
                     <label>R$</label>
-                    <input
-                        type="text"
+                    <CurrencyInput
                         placeholder="Preço"
+                        // defaultValue={1000}
+                        // intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
+                        required
+                        decimalsLimit={2}
+                        groupSeparator="."
                         value={formData.price}
-                        onChange={({ target }) =>
+                        decimalSeparator=","
+                        onValueChange={(value) =>
                             setFormData({
                                 ...formData,
-                                price: target.value,
+                                price: value,
                             })
                         }
                     />
                 </InputLabel>
+
                 <input
                     type="text"
                     placeholder="Categoria"
+                    required
                     value={formData.category}
                     onChange={({ target }) =>
                         setFormData({

@@ -5,7 +5,7 @@ interface TableProps {
         id: string
         description: string
         category: string
-        price: string
+        price: number
         type: string
         createdAt: string
     }[]
@@ -28,7 +28,7 @@ function Table({ transactions }: TableProps) {
                             <td>{transaction.description}</td>
                             <td>{transaction.price}</td>
                             <td>{transaction.category}</td>
-                            <td>{transaction.createdAt}</td>
+                            <td>{transaction.createdAt.split(' ')[0]}</td>
                         </tr>
                     ))
                 ) : (
