@@ -55,5 +55,57 @@ export const GlobalStyle = createGlobalStyle`
 
         transition: ${(props) => props.theme.transitions.all};
     }
+
+    .loader { 
+      position:relative;
+      
+    }
+    .loader:before {
+      content:'';
+      background-color: ${(props) => props.theme.colors.green700};
+      position:absolute;
+      top:0px; 
+      right: 0px; 
+      /* bottom: 0px;  */
+      left: 0px;
+      height: 3px;
+    }
+    .loader:after { 
+      content:'';
+      position:absolute;
+      border-radius:10px;
+      z-index: 999;
+      top:0px;
+      right:100%;
+      bottom:0;
+      left:0;
+      background-color: ${(props) => props.theme.colors.green300};
+      width:0;
+      animation:borealisBar 2s linear infinite;
+      height: 3px;
+    }
+
+    @keyframes borealisBar {
+      0% {
+        left:0%;
+        right:100%;
+        width:0%;
+      }
+      10% {
+        left:0%;
+        right:75%;
+        width:25%;
+      }
+      90% {
+        right:0%;
+        left:75%;
+        width:25%;
+      }
+      100% {
+        left:100%;
+        right:0%;
+        width:0%;
+      }
+    }
   
 `

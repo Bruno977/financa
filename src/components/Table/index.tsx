@@ -14,7 +14,7 @@ interface TableProps {
 }
 function Table({ transactions, loading }: TableProps) {
     return (
-        <TableContainer>
+        <TableContainer className={loading ? 'loader' : ''}>
             <thead>
                 <tr>
                     <th>Transação</th>
@@ -26,10 +26,9 @@ function Table({ transactions, loading }: TableProps) {
             {loading ? (
                 <tbody>
                     <tr>
-                        <td>Carregando</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td colSpan={4} style={{ textAlign: 'center' }}>
+                            Carregando...
+                        </td>
                     </tr>
                 </tbody>
             ) : (
