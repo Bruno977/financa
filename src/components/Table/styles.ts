@@ -30,5 +30,24 @@ export const TableContainer = styled.table`
         td {
             border-top: 4px solid ${(props) => props.theme.colors.gray900};
         }
+        td:last-of-type div {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
     }
+`
+
+export const buttonActions = styled.button`
+    border: none;
+    line-height: 0;
+    background-color: transparent;
+    cursor: pointer;
+`
+
+export const EditTransaction = styled(buttonActions)`
+    color: ${(props) => props.theme.colors.gray300};
+`
+export const RemoveTransaction = styled(buttonActions)`
+    color: ${(props) => props.theme.colors.red500};
 `

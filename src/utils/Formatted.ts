@@ -3,19 +3,7 @@ export const dateFormatter = new Intl.DateTimeFormat('pt-BR', {
     month: 'numeric',
     day: 'numeric',
 })
-export const maskPrice = [
-    '(',
-    /[1-9]/,
-    /\d/,
-    /\d/,
-    ')',
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-]
+export const moneyFormatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+})

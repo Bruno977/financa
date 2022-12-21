@@ -1,5 +1,10 @@
-import React from 'react'
-import { TableContainer } from './styles'
+import { ref, remove } from 'firebase/database'
+import React, { useContext } from 'react'
+import { FaPen, FaTimes } from 'react-icons/fa'
+import { AuthContext } from '../../contexts/AuthContext'
+import { database } from '../../services/firebase'
+import { moneyFormatter } from '../../utils/Formatted'
+import { EditTransaction, RemoveTransaction, TableContainer } from './styles'
 interface TableProps {
     transactions: {
         id: string
@@ -13,6 +18,20 @@ interface TableProps {
     loading: boolean
 }
 function Table({ transactions, loading }: TableProps) {
+    const { user } = useContext(AuthContext)
+
+    async function handleRemoveTransaction(transactionId: string) {
+        try {
+            await remove(
+                ref(
+                    database,
+                    `/users/${user?.id}/transactions/${transactionId}`
+                )
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <TableContainer className={loading ? 'loader' : ''}>
             <thead>
@@ -21,12 +40,13 @@ function Table({ transactions, loading }: TableProps) {
                     <th>Valor</th>
                     <th>Categoria</th>
                     <th>Data</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             {loading ? (
                 <tbody>
                     <tr>
-                        <td colSpan={4} style={{ textAlign: 'center' }}>
+                        <td colSpan={5} style={{ textAlign: 'center' }}>
                             Carregando...
                         </td>
                     </tr>
@@ -37,18 +57,47 @@ function Table({ transactions, loading }: TableProps) {
                         ? transactions.map((transaction) =>
                               transaction.empty ? (
                                   <tr key={transaction.id}>
-                                      <td>Nenhum dado encontrado</td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
+                                      <td colSpan={5}>
+                                          Nenhum dado encontrado
+                                      </td>
                                   </tr>
                               ) : (
                                   <tr key={transaction.id}>
                                       <td>{transaction.description}</td>
-                                      <td>{transaction.price}</td>
+                                      {transaction.type === 'income' ? (
+                                          <td style={{ color: '#00B37E' }}>
+                                              {moneyFormatter.format(
+                                                  +transaction.price
+                                              )}
+                                          </td>
+                                      ) : (
+                                          <td style={{ color: '#F75A68' }}>
+                                              -{' '}
+                                              {moneyFormatter.format(
+                                                  +transaction.price
+                                              )}
+                                          </td>
+                                      )}
                                       <td>{transaction.category}</td>
                                       <td>
                                           {transaction.createdAt.split(' ')[0]}
+                                      </td>
+                                      <td>
+                                          <div>
+                                              {/* <EditTransaction type="button">
+                                                  <FaPen size={20} />
+                                              </EditTransaction> */}
+                                              <RemoveTransaction
+                                                  type="button"
+                                                  onClick={() =>
+                                                      handleRemoveTransaction(
+                                                          transaction.id
+                                                      )
+                                                  }
+                                              >
+                                                  <FaTimes size={20} />
+                                              </RemoveTransaction>
+                                          </div>
                                       </td>
                                   </tr>
                               )
