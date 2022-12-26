@@ -1,13 +1,14 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-// import Router from './Router'
 
 import { ThemeProvider } from 'styled-components'
-import { defaultTheme } from './styles/themes/default'
-import { GlobalStyle } from './styles/global'
 import { AuthContextProvider } from './contexts/AuthContext'
 import Router from './Routes'
 import { TransactionsContextProvider } from './contexts/TransactionsContext'
+import { ToastContainer } from 'react-toastify'
+import { defaultTheme } from './styles/themes/default'
+import 'react-toastify/dist/ReactToastify.css'
+import { GlobalStyle } from './styles/global'
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <TransactionsContextProvider>
                     <BrowserRouter>
                         <Router />
+                        <ToastContainer theme="light" />
                     </BrowserRouter>
                 </TransactionsContextProvider>
             </AuthContextProvider>

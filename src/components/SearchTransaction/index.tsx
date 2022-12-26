@@ -7,25 +7,13 @@ import {
     ref,
 } from 'firebase/database'
 import React, { useContext, useState } from 'react'
-import { FaSearch } from 'react-icons/fa'
 import { AuthContext } from '../../contexts/AuthContext'
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { useTransaction } from '../../hooks/useTransaction'
 import { database } from '../../services/firebase'
+import { toast } from 'react-toastify'
+import { FaSearch } from 'react-icons/fa'
 import { Search } from './styles'
-
-type FirebaseQuestions = Record<
-    string,
-    {
-        id: string
-        description: string
-        category: string
-        price: string
-        type: string
-        createdAt: string
-        empty?: string
-    }
->
 
 function SearchTransaction() {
     const [search, setSearch] = useState('')
@@ -41,23 +29,14 @@ function SearchTransaction() {
             )
             const response = await get(mostViewedPosts)
             if (response.exists()) {
-                const firebaseQuestions: FirebaseQuestions = response.val()
+                const { transactionsSnapshot } = useTransaction(response.val())
 
-                const transactionsSnapshot = Object.entries(
-                    firebaseQuestions
-                ).map(([key, value]) => {
-                    return {
-                        id: key,
-                        description: value.description,
-                        price: value.price,
-                        category: value.category,
-                        type: value.type,
-                        createdAt: value.createdAt,
-                    }
-                })
                 setTransactions(transactionsSnapshot)
+                // setSearch('')
             } else {
-                console.log('no data available')
+                // setSearch('')
+
+                toast.info(`${search} não encontrado`)
             }
         }
     }
@@ -82,6 +61,7 @@ function SearchTransaction() {
             <input
                 type="text"
                 placeholder="Busque uma transação"
+                value={search}
                 onChange={(e) => handleChangeSearch(e)}
             />
             <button type="button" onClick={handleSearchTransaction}>
