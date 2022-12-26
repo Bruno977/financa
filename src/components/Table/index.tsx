@@ -2,23 +2,17 @@ import { ref, remove } from 'firebase/database'
 import React, { useContext } from 'react'
 import { FaPen, FaTimes } from 'react-icons/fa'
 import { AuthContext } from '../../contexts/AuthContext'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 import { database } from '../../services/firebase'
 import { moneyFormatter } from '../../utils/Formatted'
 import { EditTransaction, RemoveTransaction, TableContainer } from './styles'
 interface TableProps {
-    transactions: {
-        id: string
-        description: string
-        category: string
-        price: string
-        type: string
-        createdAt: string
-        empty?: string
-    }[]
     loading: boolean
 }
-function Table({ transactions, loading }: TableProps) {
+
+function Table({ loading }: TableProps) {
     const { user } = useContext(AuthContext)
+    const { transactions } = useContext(TransactionsContext)
 
     async function handleRemoveTransaction(transactionId: string) {
         try {

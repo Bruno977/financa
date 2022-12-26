@@ -5,37 +5,17 @@ import ModalNewTransaction from '../../components/ModalNewTransaction'
 import SearchTransaction from '../../components/SearchTransaction'
 import Table from '../../components/Table'
 import { AuthContext } from '../../contexts/AuthContext'
+import { TransactionsContext } from '../../contexts/TransactionsContext'
+import { useTransaction } from '../../hooks/useTransaction'
 import { database } from '../../services/firebase'
 import { Container, TitleContainer } from './styles'
-
-interface TransactionsProps {
-    id: string
-    description: string
-    category: string
-    price: string
-    type: string
-    createdAt: string
-    empty?: string
-}
-type FirebaseQuestions = Record<
-    string,
-    {
-        id: string
-        description: string
-        category: string
-        price: string
-        type: string
-        createdAt: string
-        empty?: string
-    }
->
 
 function Controls() {
     const [modalIsOpen, setIsOpen] = React.useState(false)
     const [loading, setLoading] = useState(false)
     const { user } = useContext(AuthContext)
+    const { setTransactions } = useContext(TransactionsContext)
 
-    const [transactions, setTransactions] = useState<TransactionsProps[]>([])
     function handleOpenModal() {
         setIsOpen(true)
     }
@@ -82,21 +62,11 @@ function Controls() {
 
                 onValue(queryTransactions, (snapshot) => {
                     if (snapshot.exists()) {
-                        const firebaseQuestions: FirebaseQuestions =
+                        const { transactionsSnapshot } = useTransaction(
                             snapshot.val()
-                        const transactionsSnapshot = Object.entries(
-                            firebaseQuestions
-                        ).map(([key, value]) => {
-                            return {
-                                id: key,
-                                description: value.description,
-                                price: value.price,
-                                category: value.category,
-                                type: value.type,
-                                createdAt: value.createdAt,
-                            }
-                        })
+                        )
                         setTransactions(transactionsSnapshot)
+
                         setLoading(false)
                     } else {
                         setTransactions([
@@ -111,7 +81,6 @@ function Controls() {
                             },
                         ])
                         setLoading(false)
-                        // console.log('Nenhum Dado encontrado')
                     }
                 })
             }
@@ -133,7 +102,7 @@ function Controls() {
             </TitleContainer>
 
             <SearchTransaction />
-            <Table transactions={transactions} loading={loading} />
+            <Table loading={loading} />
             <ModalNewTransaction
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
