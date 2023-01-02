@@ -31,6 +31,8 @@ declare module 'styled-components' {
             textLg: string
             textXl: string
             text2xl: string
+            text3xl: string
+            text4xl: string
         }
 
         spacing: {

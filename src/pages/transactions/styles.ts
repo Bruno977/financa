@@ -9,9 +9,4 @@ export const TitleContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-
-    h1 {
-        font-size: ${(props) => props.theme.fontSizes.text2xl};
-        color: ${(props) => props.theme.colors.white};
-    }
 `

@@ -28,6 +28,8 @@ const defaultTheme: DefaultTheme = {
         textLg: '1.125rem',
         textXl: '1.25rem',
         text2xl: '1.5rem',
+        text3xl: '1.75rem',
+        text4xl: '2rem',
     },
 
     spacing: {

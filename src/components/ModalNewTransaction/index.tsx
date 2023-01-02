@@ -11,6 +11,7 @@ import {
 
 import { AuthContext } from '../../contexts/AuthContext'
 import CurrencyInput from 'react-currency-input-field'
+import { format } from 'date-fns'
 
 interface ModalNewTransactionProps {
     modalIsOpen: boolean
@@ -51,14 +52,7 @@ function ModalNewTransaction({
                 price: formData.price,
                 category: formData.category,
                 type: formData.type,
-                createdAt: new Date().toLocaleDateString('pt-BR', {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                }),
+                createdAt: format(new Date(), 'dd/MM/yyyy'),
             })
             setFormData({
                 description: '',

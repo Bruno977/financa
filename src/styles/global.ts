@@ -44,6 +44,10 @@ export const GlobalStyle = createGlobalStyle`
   .ReactModal__Overlay--before-close{
       opacity: 0;
   }
+  h1{
+    font-size: ${(props) => props.theme.fontSizes.text2xl};
+        color: ${(props) => props.theme.colors.white};
+  }
   input {
         flex: 1;
         height: 2.75rem;

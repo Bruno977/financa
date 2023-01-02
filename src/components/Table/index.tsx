@@ -73,9 +73,7 @@ function Table({ loading }: TableProps) {
                                           </td>
                                       )}
                                       <td>{transaction.category}</td>
-                                      <td>
-                                          {transaction.createdAt.split(' ')[0]}
-                                      </td>
+                                      <td>{transaction.createdAt}</td>
                                       <td>
                                           <div>
                                               {/* <EditTransaction type="button">
