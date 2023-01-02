@@ -26,38 +26,9 @@ function Controls() {
         try {
             setLoading(true)
             if (user) {
-                // const queryTransactions = query(
-                //     ref(database, `users/${user?.id}/transactions`),
-                //     limitToLast(5)
-                // )
-                // get(queryTransactions)
-                //     .then((snapshot) => {
-                //         if (snapshot.exists()) {
-                //             const firebaseQuestions: FirebaseQuestions =
-                //                 snapshot.val()
-                //             const transactionsSnapshot = Object.entries(
-                //                 firebaseQuestions
-                //             ).map(([key, value]) => {
-                //                 return {
-                //                     id: key,
-                //                     description: value.description,
-                //                     price: value.price,
-                //                     category: value.category,
-                //                     type: value.type,
-                //                 }
-                //             })
-                //             setTransactions(transactionsSnapshot)
-                //         } else {
-                //             console.log('No data available')
-                //         }
-                //     })
-                //     .catch((error) => {
-                //         console.error(error)
-                //     })
-
                 const queryTransactions = query(
-                    ref(database, `users/${user?.id}/transactions`),
-                    limitToLast(5)
+                    ref(database, `users/${user?.id}/transactions`)
+                    // limitToLast(5)
                 )
 
                 onValue(queryTransactions, (snapshot) => {
